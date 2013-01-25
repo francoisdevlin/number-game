@@ -23,7 +23,7 @@
       true (vec (vals output)))))
 
 (defn to-num [seq]
-  (reduce * (map (fn [e base] (Math/pow base e)) seq primes)))
+  (reduce * (map (fn [e base] (.pow (BigInteger. (str base)) e)) seq primes)))
 
 (defn full-length
   [a]
@@ -40,4 +40,12 @@
 
 (defn sub [a b]
   (factor (int (- (to-num a) (to-num b)))))
+
+(defn prime-powers [n prime]
+  (take n (take-while (partial >= n) (iterate (partial * prime) prime))))
+
+(defn !-1 [n prime]
+     (reduce + (map (fn [power] (int (/ n power))) (prime-powers n prime))))
+
+(defn ! [n] (map (partial !-1 n) primes))
 
